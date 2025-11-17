@@ -93,8 +93,6 @@ def rag_query():
         return jsonify({'error': f'Intern serverfejl under query.'}), 500
     # app.py (MIDLERTIDIG DEBUG RETTELSE i rag_query ruten)
 
-# --- Kør Flask App ---
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
-
