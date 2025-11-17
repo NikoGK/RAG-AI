@@ -53,7 +53,6 @@ def upload_file():
             cleaned_content = file_content.replace('\x00', '')
         
         # Kald kernefunktionen med det rensede indhold.
-        # (index_document_chunk vil derefter chunk/embed det rene indhold)
         response_data = index_document_chunk(cleaned_content, file_name)
 
         return jsonify({"message": f"Dokument '{file_name}' indekseret succesfuldt.", "data": response_data}), 200
@@ -77,21 +76,13 @@ def rag_query():
     try:
         # Kald kernefunktionen fra rag_core.py
         answer = retrieve_and_generate_answer(query)
-        
         return jsonify({'answer': answer}), 200
-
-    except Exception as e:
-        print(f"Fejl ved query: {e}") # Denne linje viser detaljerne i din terminal
-    # Returner fejldetaljen til browseren for at identificere problemet
-        return jsonify({'error': f'Intern serverfejl under query. Detalje: {str(e)}'}), 500
-
 
     except ValueError as e:
         return jsonify({'error': str(e)}), 400
     except Exception as e:
         print(f"Fejl ved query: {e}")
-        return jsonify({'error': f'Intern serverfejl under query.'}), 500
-    # app.py (MIDLERTIDIG DEBUG RETTELSE i rag_query ruten)
+        return jsonify({'error': f'Intern serverfejl under query. Detalje: {str(e)}'}), 500
 
 # --- Kør Flask App ---
 if __name__ == '__main__':
